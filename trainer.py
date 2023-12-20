@@ -6,7 +6,7 @@ import pandas as pd
 import os
 
 def load_mnist():
-    with open('mnist.pkl', 'rb') as f:
+    with open('alphabet.pkl', 'rb') as f:
         mnist = pickle.load(f)
     return mnist['training_images'], mnist['training_labels'], mnist['test_images'], mnist['test_labels']
 
@@ -15,7 +15,7 @@ print(train_x.shape, train_y.shape, test_x.shape, test_y.shape)
 
 # Convert to pandas dataframe
 train_x, train_y, test_x, test_y = [pd.DataFrame(x) for x in [train_x, train_y, test_x, test_y]]
-print(train_x[0])
+
 # suffle
 train_x, train_y = train_x.sample(frac=1, random_state=42), train_y.sample(frac=1, random_state=42)
 test_x, test_y = test_x.sample(frac=1, random_state=42), test_y.sample(frac=1, random_state=42)
@@ -28,7 +28,7 @@ for i, axi in enumerate(ax.flat):
     axi.set(xticks=[], yticks=[], xlabel=letter)
 ax[0, 0].set(title='Examples of digits\n');
 plt.show()
-exit()
+
 # Normalize
 train_x = train_x/255.0
 test_x = test_x/255.0
