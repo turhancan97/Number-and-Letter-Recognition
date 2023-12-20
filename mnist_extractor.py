@@ -2,6 +2,7 @@ import os
 from PIL import Image
 import numpy as np
 import pickle
+from utils import apply_erosion
 
 def load_images_from_folder(folder):
     images = []
@@ -11,12 +12,13 @@ def load_images_from_folder(folder):
         if os.path.isdir(label_path):
             for image_file in os.listdir(label_path):
                 if image_file.endswith('.png'):
+                    print(label_path, end='\r')
                     img_path = os.path.join(label_path, image_file)
                     img = Image.open(img_path)
                     # img = img.resize((28, 28))  # Resize to 28x28
-                    img.show()
-                    exit()
-                    img_array = np.array(img).flatten()  # Flatten the image
+                    img_array = np.array(img)
+                    img_array = apply_erosion(img_array, kernel_size=(2, 2), iterations=1)  # Apply erosion
+                    img_array = img_array.flatten()  # Flatten the image
                     images.append(img_array)
                     labels.append(int(label))
     return np.array(images), np.array(labels)
