@@ -20,7 +20,7 @@ class MainWidget(QtWidgets.QWidget):
         self.image_loaded_from_disk = False  # Initialize the flag
 
         # Best Model Loaded
-        self.loaded_model = pickle.load(open('multi_layer_perceptron.pkl', 'rb'))
+        self.loaded_model = pickle.load(open('model/best_model.pkl', 'rb'))
 
         self.initUI()
     
