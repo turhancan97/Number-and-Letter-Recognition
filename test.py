@@ -75,12 +75,15 @@ class MainWidget(QtWidgets.QWidget):
     def predict(self):
         s = self.label.pixmap().toImage().bits().asarray(self.QPixmap_size[0] * self.QPixmap_size[1] * 4)
         arr = np.frombuffer(s, dtype=np.uint8).reshape((self.QPixmap_size[0], self.QPixmap_size[1], 4))
-        if self.image_loaded_from_disk:
+        if self.image_loaded_from_disk: # Eğer görüntü diskten yüklendiyse
             img = Image.fromarray(arr)
             img_gray = ImageOps.grayscale(img)
-            # If average pizel value is more than 128, invert the image
-            if np.mean(img_gray) > 128: # 128 is the middle of 0 and 255
-                img_gray = ImageOps.invert(img_gray) # Invert the image
+            # Ortalama pizel değeri 128'den fazlaysa görüntüyü ters çevirin
+            # Bunun nedeni içeri aktarılan görüntülerin beyaz arka plana sahip olma ihtimalidir.
+            # Bu nedenle görüntüyü ters çevirerek siyah arka plana sahip hale getiriyoruz.
+            # Çünkü eğittiğimiz model siyah arka plana sahip görüntülerle eğitildi.
+            if np.mean(img_gray) > 128: # 128, 0 ve 255'in ortasıdır
+                img_gray = ImageOps.invert(img_gray) # Görüntüyü ters çevirin
                 img_gray = img_gray.resize((self.training_size[0], self.training_size[1]), Image.ANTIALIAS)
             else:
                 img_gray = img_gray.resize((self.training_size[0], self.training_size[1]), Image.ANTIALIAS)
@@ -93,9 +96,9 @@ class MainWidget(QtWidgets.QWidget):
             img_gray = ImageOps.grayscale(img)
         arr = np.array(img_gray)
         arr = (arr / 255.0).reshape(1, -1)
-        if self.loaded_model.predict(arr)[0] < 10:
+        if self.loaded_model.predict(arr)[0] < 10: # Eğer tahmin edilen değer 10'dan küçükse yani rakamsa
             prediction_value = str(self.loaded_model.predict(arr)[0])
-        else:
+        else: # Eğer tahmin edilen değer 10'dan büyükse yani harfse
             prediction_value = chr(self.loaded_model.predict(arr)[0])
         self.prediction.setText('Prediction: ' + prediction_value)
         self.image_loaded_from_disk = False
