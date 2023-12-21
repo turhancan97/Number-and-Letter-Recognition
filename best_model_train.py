@@ -21,11 +21,11 @@ model = MLPClassifier(
     random_state=42,
 )
 
-model.fit(train_x, train_y.values.flatten()) # modeli eğitiyoruz.
-y_pred = model.predict(test_x) # modeli test seti üzerinde test ediyoruz.
-test_acc = accuracy_score(test_y, y_pred) * 100 # test accuracy hesaplıyoruz.
-print("Test accuracy: ", test_acc) # test accuracy'i yazdırıyoruz.
-print(classification_report(test_y, y_pred)) # önemli metrikleri yazdırıyoruz.
+model.fit(train_x, train_y.values.flatten())  # modeli eğitiyoruz.
+y_pred = model.predict(test_x)  # modeli test seti üzerinde test ediyoruz.
+test_acc = accuracy_score(test_y, y_pred) * 100  # test accuracy hesaplıyoruz.
+print("Test accuracy: ", test_acc)  # test accuracy'i yazdırıyoruz.
+print(classification_report(test_y, y_pred))  # önemli metrikleri yazdırıyoruz.
 
 # modeli kaydediyoruz.
 filename = "model/best_model.pkl"
