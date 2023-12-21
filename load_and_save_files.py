@@ -1,11 +1,17 @@
 import pickle
 
 def load_mnist():
+    '''
+    MNIST veri setini yükleyin.
+    '''
     with open('data/mnist.pkl', 'rb') as f:
         mnist = pickle.load(f)
     return mnist['training_images'], mnist['training_labels'], mnist['test_images'], mnist['test_labels']
 
 def load_alphabet():
+    '''
+    Alphanet veri setini yükleyin.
+    '''
     with open('data/alphabet.pkl', 'rb') as f:
         alphabet = pickle.load(f)
         training_samples = alphabet['training_images'], alphabet['training_labels']
@@ -14,10 +20,16 @@ def load_alphabet():
     return training_samples[0], training_samples[1], validation_samples[0], validation_samples[1], test_samples[0], test_samples[1]
 
 def save_pickle(data, output_file):
+    '''
+    Verileri pickle dosyasına kaydedin.
+    '''
     with open(output_file, 'wb') as f:
         pickle.dump(data, f)
 
 def load_pickle(input_file):
+    '''
+    Verileri pickle dosyasından yükleyin.
+    '''
     with open(input_file, 'rb') as f:
         data = pickle.load(f)
     return data

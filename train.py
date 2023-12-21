@@ -2,11 +2,16 @@ import pandas as pd
 from utils import train_model
 from load_and_save_files import load_pickle, save_pickle
 
+# Ön işleme yapılmış verileri yüklüyoruz.
 data = load_pickle("data/preprocessed_data.pkl")
 
+# Verileri ayırıyoruz.
 train_x, train_y, test_x, test_y = data["train_x"], data["train_y"], data["test_x"], data["test_y"]
 
-# # Train
+# 4 farlı model ile eğitim yapacağız.
+# Bunları bir liste içerisinde tutuyoruz.
+# Model isimlerini ve doğruluklarını tutmak için bir sözlük oluşturuyoruz.
+# Daha sonra döngü içinde modeli eğitip doğruluğunu hesaplayıp sözlüğe ekliyoruz.
 model_names = ['Logistic Regression', 'K Nearest Neighbors', 'Multi Layer Perceptron', 'Support Vector Machine']
 model_accuracy = {}
 for model_name in model_names:
