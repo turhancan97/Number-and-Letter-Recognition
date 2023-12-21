@@ -1,12 +1,12 @@
 import pickle
 
 def load_mnist():
-    with open('mnist.pkl', 'rb') as f:
+    with open('data/mnist.pkl', 'rb') as f:
         mnist = pickle.load(f)
     return mnist['training_images'], mnist['training_labels'], mnist['test_images'], mnist['test_labels']
 
 def load_alphabet():
-    with open('alphabet.pkl', 'rb') as f:
+    with open('data/alphabet.pkl', 'rb') as f:
         alphabet = pickle.load(f)
         training_samples = alphabet['training_images'], alphabet['training_labels']
         validation_samples = alphabet['validation_images'], alphabet['validation_labels']
