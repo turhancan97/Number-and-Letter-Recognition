@@ -38,4 +38,4 @@ def process_and_save_mnist(training_dir, testing_dir, output_file):
         pickle.dump(mnist, f)
 
 # Example usage
-process_and_save_mnist('./mnist/training', './mnist/testing', 'mnist.pkl')
+process_and_save_mnist('./data/mnist/training', './data/mnist/testing', 'data/mnist.pkl')
