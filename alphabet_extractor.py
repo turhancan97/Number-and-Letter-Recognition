@@ -56,10 +56,10 @@ def process_and_save_data(training_dir, validation_dir, testing_dir, output_file
         pickle.dump(data, f)
 
 # Example usage
-train_folder = './alphabet/train'
-validation_folder = './alphabet/validation'
-test_folder = './alphabet/test'
+train_folder = './data/alphabet/train'
+validation_folder = './data/alphabet/validation'
+test_folder = './data/alphabet/test'
 # # change it to png
 # for folder in [train_folder, validation_folder, test_folder]:
 #     from_jpg_to_png(folder)
-process_and_save_data(train_folder, validation_folder, test_folder, 'alphabet.pkl')
+process_and_save_data(train_folder, validation_folder, test_folder, 'data/alphabet.pkl')
