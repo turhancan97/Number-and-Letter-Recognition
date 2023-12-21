@@ -16,3 +16,8 @@ def load_alphabet():
 def save_pickle(data, output_file):
     with open(output_file, 'wb') as f:
         pickle.dump(data, f)
+
+def load_pickle(input_file):
+    with open(input_file, 'rb') as f:
+        data = pickle.load(f)
+    return data
