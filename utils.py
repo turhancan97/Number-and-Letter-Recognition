@@ -2,9 +2,9 @@ import cv2
 import numpy as np
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, accuracy_score
 
 
 def adjust_grayscale(image, threshold=65):
@@ -60,18 +60,14 @@ def train_model(
     if model_name == "Support Vector Machine":
         model = SVC(verbose=True, random_state=42)
     elif model_name == "K Nearest Neighbors":
-        model = KNeighborsClassifier(n_neighbors=7)
-    elif model_name == "Random Forest":
-        model = RandomForestClassifier(n_estimators=100, verbose=True, random_state=42)
+        model = KNeighborsClassifier()
+    elif model_name == "Logistic Regression":
+        model = LogisticRegression(verbose=True, random_state=42)
     elif model_name == "Multi Layer Perceptron":
-        model = MLPClassifier(
-            hidden_layer_sizes=(150, 150, 150),
-            max_iter=500,
-            verbose=True,
-            random_state=42,
-        )
+        model = MLPClassifier(verbose=True, random_state=42)
     model.fit(train_x, train_y.values.flatten())
     y_pred = model.predict(test_x)
+    test_acc = accuracy_score(test_y, y_pred) * 100
     print(classification_report(test_y, y_pred))
 
-    return model
+    return model, test_acc
