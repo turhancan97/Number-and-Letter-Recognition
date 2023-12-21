@@ -6,6 +6,10 @@ train_x_mnist, train_y_mnist, test_x_mnist, test_y_mnist = load_mnist()
 
 train_x_alphabet, train_y_alphabet, valid_x_alphabet, valid_y_alphabet, test_x_alphabet, test_y_alphabet = load_alphabet()
 
+# add validation to the end of training set
+train_x_alphabet = np.concatenate((train_x_alphabet, valid_x_alphabet))
+train_y_alphabet = np.concatenate((train_y_alphabet, valid_y_alphabet))
+
 # Convert to pandas dataframe
 train_x_mnist, train_y_mnist, test_x_mnist, test_y_mnist = [
     pd.DataFrame(x) for x in [train_x_mnist, train_y_mnist, test_x_mnist, test_y_mnist]
@@ -65,4 +69,4 @@ data = {
     "test_x": test_x,
     "test_y": test_y,
 }
-save_pickle(data, "preprocessed_data.pkl")
+save_pickle(data, "data/preprocessed_data.pkl")
