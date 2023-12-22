@@ -3,6 +3,8 @@ import numpy as np
 import pickle
 from PIL import Image, ImageOps, ImageQt
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import QSize
 
 from utils import apply_erosion
 
@@ -19,6 +21,8 @@ class MainWidget(QtWidgets.QWidget):
 
         self.image_loaded_from_disk = False  # Initialize the flag
 
+        self.brush_size = 5  # Default brush size
+
         # Best Model Loaded
         self.loaded_model = pickle.load(open('model/best_model.pkl', 'rb'))
 
@@ -28,6 +32,11 @@ class MainWidget(QtWidgets.QWidget):
         self.container = QtWidgets.QVBoxLayout()
         self.container.setContentsMargins(0, 0, 0, 0)
 
+        # Assuming you have emoji icons in the 'icons' directory
+        clear_icon = QIcon('docs/clean.png')
+        predict_icon = QIcon('docs/predict.png')
+        load_icon = QIcon('docs/load.png')
+
         # Used As Canvas Container
         self.label = QtWidgets.QLabel()
         canvas = QtGui.QPixmap(self.QPixmap_size[0], self.QPixmap_size[1])
@@ -36,15 +45,31 @@ class MainWidget(QtWidgets.QWidget):
         self.last_x, self.last_y = None, None
 
         self.prediction = QtWidgets.QLabel('Prediction: ...')
-        self.prediction.setFont(QtGui.QFont('Monospace', 20))
+        self.prediction.setFont(QtGui.QFont('Arial', 20, QtGui.QFont.Bold))
+        self.prediction.setStyleSheet("color: blue;")
+
+        self.slider_brush_size = QtWidgets.QSlider(QtCore.Qt.Horizontal, self)
+        self.slider_brush_size.setMinimum(1)
+        self.slider_brush_size.setMaximum(20)
+        self.slider_brush_size.setValue(self.brush_size)
+        self.slider_brush_size.valueChanged[int].connect(self.change_brush_size)
 
         self.button_clear = QtWidgets.QPushButton('CLEAR')
+        self.button_clear.setIcon(clear_icon)
+        self.button_clear.setIconSize(QSize(24, 24))  # Adjust icon size
+        self.button_clear.setStyleSheet("background-color: red; color: white;")
         self.button_clear.clicked.connect(self.clear_canvas)
 
         self.button_save = QtWidgets.QPushButton('PREDICT')
+        self.button_save.setIcon(predict_icon)
+        self.button_save.setIconSize(QSize(24, 24))
+        self.button_save.setStyleSheet("background-color: green; color: white;")
         self.button_save.clicked.connect(self.predict)
 
         self.button_load_image = QtWidgets.QPushButton('LOAD IMAGE')
+        self.button_load_image.setIcon(load_icon)
+        self.button_load_image.setIconSize(QSize(24, 24))
+        self.button_load_image.setStyleSheet("background-color: orange; color: white;")
         self.button_load_image.clicked.connect(self.load_image_from_disk)
 
         self.container.addWidget(self.label)
@@ -52,8 +77,16 @@ class MainWidget(QtWidgets.QWidget):
         self.container.addWidget(self.button_clear)
         self.container.addWidget(self.button_save)
         self.container.addWidget(self.button_load_image)
+        brush_size_label = QtWidgets.QLabel("Brush Size")
+        brush_size_label.setStyleSheet("color: blue;")
+        brush_size_label.setFont(QtGui.QFont('Arial', 15, QtGui.QFont.Bold))
+        self.container.addWidget(brush_size_label, alignment = QtCore.Qt.AlignHCenter)
+        self.container.addWidget(self.slider_brush_size)
 
         self.setLayout(self.container)
+
+    def change_brush_size(self, value):
+        self.brush_size = value
 
     def load_image_from_disk(self):
         options = QtWidgets.QFileDialog.Options()
@@ -112,7 +145,8 @@ class MainWidget(QtWidgets.QWidget):
         painter = QtGui.QPainter(self.label.pixmap())
 
         p = painter.pen()
-        p.setWidth(5)
+        p.setWidth(self.brush_size)  # Use the updated brush size
+        # p.setWidth(5)
         self.pen_color = QtGui.QColor('#FFFFFF')
         p.setColor(self.pen_color)
         painter.setPen(p)
@@ -145,6 +179,6 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication([])
 
     mainApp = MainWindow()
-    mainApp.setWindowTitle('DIGIT PREDICTER')
+    mainApp.setWindowTitle('Number&Letter Recognition')
     mainApp.show()
     sys.exit(app.exec_())
