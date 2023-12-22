@@ -34,7 +34,8 @@ test_x_alphabet, test_y_alphabet = test_x_alphabet.sample(
 ), test_y_alphabet.sample(frac=1, random_state=42)
 
 # MNIST veri setinde 60000 eğitim verisi var. Alphanet veri setinde yakaşık 30000 eğitim verisi var.
-# Bu şekilde eğitirsek MNIST veri seti çok daha fazla ağırlığa sahip olacak. Ve bu da modelin MNIST veri setindeki rakamları daha iyi tahmin etmesine neden olacak.
+# Bu şekilde eğitirsek MNIST veri seti çok daha fazla ağırlığa sahip olacak.
+# Ve bu da modelin MNIST veri setindeki rakamları daha iyi tahmin etmesine neden olacak.
 # Bu nedenle MNIST veri setindeki verilerin %40'unu kullanacağız.
 # Aynı şekilde test verileri için de yapacağız.
 # Böylelikle rakamlar ve harfler için eğitim ve test verileri benzer dağılıma sahip olacak.

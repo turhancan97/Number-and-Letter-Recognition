@@ -51,7 +51,7 @@ class MainWidget(QtWidgets.QWidget):
         self.prediction = QtWidgets.QLabel('Prediction: ...')
         self.prediction.setFont(QtGui.QFont('Arial', 20, QtGui.QFont.Bold))
         self.prediction.setStyleSheet("color: blue;")
-        
+
         # Fırça boyutunu ayarlamak için bir kaydırıcı
         self.slider_brush_size = QtWidgets.QSlider(QtCore.Qt.Horizontal, self)
         self.slider_brush_size.setMinimum(1)
@@ -82,14 +82,14 @@ class MainWidget(QtWidgets.QWidget):
 
         # Konteyneri düğmelerle doldurun
         self.container.addWidget(self.label)
-        self.container.addWidget(self.prediction, alignment = QtCore.Qt.AlignHCenter)
+        self.container.addWidget(self.prediction, alignment=QtCore.Qt.AlignHCenter)
         self.container.addWidget(self.button_clear)
         self.container.addWidget(self.button_save)
         self.container.addWidget(self.button_load_image)
         brush_size_label = QtWidgets.QLabel("Brush Size")
         brush_size_label.setStyleSheet("color: blue;")
         brush_size_label.setFont(QtGui.QFont('Arial', 15, QtGui.QFont.Bold))
-        self.container.addWidget(brush_size_label, alignment = QtCore.Qt.AlignHCenter)
+        self.container.addWidget(brush_size_label, alignment=QtCore.Qt.AlignHCenter)
         self.container.addWidget(self.slider_brush_size)
 
         self.setLayout(self.container)
@@ -136,10 +136,10 @@ class MainWidget(QtWidgets.QWidget):
             # Bunun nedeni içeri aktarılan görüntülerin beyaz arka plana sahip olma ihtimalidir.
             # Bu nedenle görüntüyü ters çevirerek siyah arka plana sahip hale getiriyoruz.
             # Çünkü eğittiğimiz model siyah arka plana sahip görüntülerle eğitildi.
-            if np.mean(img_gray) > 128: # 128, 0 ve 255'in ortasıdır
-                img_gray = ImageOps.invert(img_gray) # Görüntüyü ters çevirin
+            if np.mean(img_gray) > 128:  # 128, 0 ve 255'in ortasıdır
+                img_gray = ImageOps.invert(img_gray)  # Görüntüyü ters çevirin
                 img_gray = img_gray.resize((self.training_size[0], self.training_size[1]), Image.ANTIALIAS)
-                img_gray = adjust_grayscale(img_gray) # Adjust grayscale
+                img_gray = adjust_grayscale(img_gray)  # Adjust grayscale
             else:
                 img_gray = img_gray.resize((self.training_size[0], self.training_size[1]), Image.ANTIALIAS)
                 arr = np.array(img_gray)
@@ -151,9 +151,9 @@ class MainWidget(QtWidgets.QWidget):
             img_gray = ImageOps.grayscale(img)
         arr = np.array(img_gray)
         arr = (arr / 255.0).reshape(1, -1)
-        if self.loaded_model.predict(arr)[0] < 10: # Eğer tahmin edilen değer 10'dan küçükse yani rakamsa
+        if self.loaded_model.predict(arr)[0] < 10:  # Eğer tahmin edilen değer 10'dan küçükse yani rakamsa
             prediction_value = str(self.loaded_model.predict(arr)[0])
-        else: # Eğer tahmin edilen değer 10'dan büyükse yani harfse
+        else:  # Eğer tahmin edilen değer 10'dan büyükse yani harfse
             prediction_value = chr(self.loaded_model.predict(arr)[0])
         self.prediction.setText('Prediction: ' + prediction_value)
         self.image_loaded_from_disk = False
@@ -200,13 +200,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(self.mainWidget)
 
 
-
 if __name__ == "__main__":
     '''
     Uygulamayı çalıştırmak için kullanılır.
     '''
     app = QtWidgets.QApplication([])
-
     mainApp = MainWindow()
     mainApp.setWindowTitle('Number&Letter Recognition')
     mainApp.show()
