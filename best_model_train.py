@@ -1,4 +1,4 @@
-from sklearn.neural_network import MLPClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, accuracy_score
 from load_and_save_files import load_pickle, save_pickle
 
@@ -8,16 +8,13 @@ data = load_pickle("data/preprocessed_data.pkl")
 # Verileri ayırıyoruz.
 train_x, train_y, test_x, test_y = data["train_x"], data["train_y"], data["test_x"], data["test_y"]
 
-# %73 accuracy ile yapay sinir ağları modeli en iyi model olarak seçildi.
+# %83 accuracy ile Random Forest modeli en iyi model olarak seçildi.
 # Şimdi amaç bu modelin hyperparameterlarını optimize ederek daha iyi bir model elde etmek.
 # ve accuracy'i arttırarak bu modeli best_model.pkl olarak kaydetmek.
 
 # modeli çağırıyoruz.
-model = MLPClassifier(
-    hidden_layer_sizes=(200, 200, 200, 200, 200),
-    max_iter=500,
-    n_iter_no_change=50,
-    verbose=True,
+model = RandomForestClassifier(
+    n_estimators=500,
     random_state=42,
 )
 
@@ -31,5 +28,5 @@ print(classification_report(test_y, y_pred))  # önemli metrikleri yazdırıyoru
 filename = "model/best_model.pkl"
 save_pickle(model, filename)
 
-# Yeni accuracy %89 oldu.
+# Yeni accuracy %85 oldu.
 # Sonuç olarak model daha iyi hale gelmiş oldu.

@@ -33,18 +33,18 @@ test_x_alphabet, test_y_alphabet = test_x_alphabet.sample(
     frac=1, random_state=42
 ), test_y_alphabet.sample(frac=1, random_state=42)
 
-# MNIST veri setinde 60000 eğitim verisi var. Alphanet veri setinde yakaşık 15000 eğitim verisi var.
+# MNIST veri setinde 60000 eğitim verisi var. Alphanet veri setinde yakaşık 30000 eğitim verisi var.
 # Bu şekilde eğitirsek MNIST veri seti çok daha fazla ağırlığa sahip olacak. Ve bu da modelin MNIST veri setindeki rakamları daha iyi tahmin etmesine neden olacak.
-# Bu nedenle MNIST veri setindeki verilerin %10'unu kullanacağız.
-# Aynı şekilde test verileri için de yapacağız. MNIST veri setindeki verilerin %7.5'unu kullanacağız.
+# Bu nedenle MNIST veri setindeki verilerin %40'unu kullanacağız.
+# Aynı şekilde test verileri için de yapacağız.
 # Böylelikle rakamlar ve harfler için eğitim ve test verileri benzer dağılıma sahip olacak.
-train_x_mnist = train_x_mnist.iloc[: int(len(train_x_mnist) * 0.1)]
-train_y_mnist = train_y_mnist.iloc[: int(len(train_y_mnist) * 0.1)]
+train_x_mnist = train_x_mnist.iloc[: int(len(train_x_mnist) * 0.4)]
+train_y_mnist = train_y_mnist.iloc[: int(len(train_y_mnist) * 0.4)]
 train_x = pd.concat([train_x_alphabet, train_x_mnist])
 train_y = pd.concat([train_y_alphabet, train_y_mnist])
 
-test_x_mnist = test_x_mnist.iloc[: int(len(test_x_mnist) * 0.075)]
-test_y_mnist = test_y_mnist.iloc[: int(len(test_y_mnist) * 0.075)]
+test_x_mnist = test_x_mnist.iloc[: int(len(test_x_mnist) * 0.4)]
+test_y_mnist = test_y_mnist.iloc[: int(len(test_y_mnist) * 0.4)]
 test_x = pd.concat([test_x_alphabet, test_x_mnist])
 test_y = pd.concat([test_y_alphabet, test_y_mnist])
 

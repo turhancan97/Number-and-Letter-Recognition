@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
-from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import classification_report, accuracy_score
@@ -32,14 +33,16 @@ def train_model(
     """
     Verilen model adını ve giriş verilerini temel alarak bir makine öğrenimi modelini eğitir.
     """
-    if model_name == "Support Vector Machine":
-        model = SVC(verbose=True, random_state=42)
-    elif model_name == "K Nearest Neighbors":
+    if model_name == "K Nearest Neighbors":
         model = KNeighborsClassifier()
     elif model_name == "Logistic Regression":
         model = LogisticRegression(verbose=True, random_state=42)
     elif model_name == "Multi Layer Perceptron":
         model = MLPClassifier(verbose=True, random_state=42)
+    elif model_name == "Decision Tree":
+        model = DecisionTreeClassifier(random_state=42)
+    elif model_name == "Random Forest":
+        model = RandomForestClassifier(verbose=True, random_state=42)
     model.fit(train_x, train_y.values.flatten())
     y_pred = model.predict(test_x)
     test_acc = accuracy_score(test_y, y_pred) * 100

@@ -6,72 +6,81 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QSize
 
-from utils import apply_erosion
+from utils import apply_erosion, adjust_grayscale
 
 class MainWidget(QtWidgets.QWidget):
 
     def __init__(self):
         super().__init__()
 
-        # Canvas Size
+        # Canvas boyutu
         self.QPixmap_size = 256, 256
 
-        # Training Size
+        # Eğitim verileri boyutu
         self.training_size = 28, 28
 
-        self.image_loaded_from_disk = False  # Initialize the flag
+        # Bir görüntünün diskten yüklenip yüklenmediğini kontrol etmek için bayrak
+        self.image_loaded_from_disk = False
 
-        self.brush_size = 5  # Default brush size
+        # Fırça boyutu
+        self.brush_size = 5
 
-        # Best Model Loaded
+        # En iyi modeli yükleme
         self.loaded_model = pickle.load(open('model/best_model.pkl', 'rb'))
 
+        # Arayüzü oluşturma
         self.initUI()
-    
+
     def initUI(self):
         self.container = QtWidgets.QVBoxLayout()
         self.container.setContentsMargins(0, 0, 0, 0)
 
-        # Assuming you have emoji icons in the 'icons' directory
+        # 'docs' dizininde simgeleriniz var
         clear_icon = QIcon('docs/clean.png')
         predict_icon = QIcon('docs/predict.png')
         load_icon = QIcon('docs/load.png')
 
-        # Used As Canvas Container
+        # Kanvas Konteyner Olarak Kullanılır
         self.label = QtWidgets.QLabel()
         canvas = QtGui.QPixmap(self.QPixmap_size[0], self.QPixmap_size[1])
         canvas.fill(QtGui.QColor("black"))
         self.label.setPixmap(canvas)
         self.last_x, self.last_y = None, None
 
+        # Tahmin etme sonucunu göstermek için bir etiket
         self.prediction = QtWidgets.QLabel('Prediction: ...')
         self.prediction.setFont(QtGui.QFont('Arial', 20, QtGui.QFont.Bold))
         self.prediction.setStyleSheet("color: blue;")
-
+        
+        # Fırça boyutunu ayarlamak için bir kaydırıcı
         self.slider_brush_size = QtWidgets.QSlider(QtCore.Qt.Horizontal, self)
         self.slider_brush_size.setMinimum(1)
         self.slider_brush_size.setMaximum(20)
         self.slider_brush_size.setValue(self.brush_size)
         self.slider_brush_size.valueChanged[int].connect(self.change_brush_size)
 
+        # Temizleme, tahmin etme ve görüntü yükleme düğmeleri
         self.button_clear = QtWidgets.QPushButton('CLEAR')
         self.button_clear.setIcon(clear_icon)
         self.button_clear.setIconSize(QSize(24, 24))  # Adjust icon size
         self.button_clear.setStyleSheet("background-color: red; color: white;")
         self.button_clear.clicked.connect(self.clear_canvas)
 
+        # Tahmin etme düğmesi
         self.button_save = QtWidgets.QPushButton('PREDICT')
         self.button_save.setIcon(predict_icon)
         self.button_save.setIconSize(QSize(24, 24))
         self.button_save.setStyleSheet("background-color: green; color: white;")
         self.button_save.clicked.connect(self.predict)
 
+        # Görüntü yükleme düğmesi
         self.button_load_image = QtWidgets.QPushButton('LOAD IMAGE')
         self.button_load_image.setIcon(load_icon)
         self.button_load_image.setIconSize(QSize(24, 24))
         self.button_load_image.setStyleSheet("background-color: orange; color: white;")
         self.button_load_image.clicked.connect(self.load_image_from_disk)
 
+        # Konteyneri düğmelerle doldurun
         self.container.addWidget(self.label)
         self.container.addWidget(self.prediction, alignment = QtCore.Qt.AlignHCenter)
         self.container.addWidget(self.button_clear)
@@ -86,9 +95,15 @@ class MainWidget(QtWidgets.QWidget):
         self.setLayout(self.container)
 
     def change_brush_size(self, value):
+        '''
+        Fırça boyutunu değiştirmek için kullanılır.
+        '''
         self.brush_size = value
 
     def load_image_from_disk(self):
+        '''
+        Diskten bir görüntü yüklemek için kullanılır.
+        '''
         options = QtWidgets.QFileDialog.Options()
         filename, _ = QtWidgets.QFileDialog.getOpenFileName(
             self, "Load Image", "", "Image Files (*.png *.jpg *.jpeg)", options=options
@@ -102,13 +117,19 @@ class MainWidget(QtWidgets.QWidget):
             self.image_loaded_from_disk = True  # Set the flag when an image is loaded
 
     def clear_canvas(self):
+        '''
+        Kanvası temizlemek için kullanılır.
+        '''
         self.label.pixmap().fill(QtGui.QColor('#000000'))
         self.update()
 
     def predict(self):
+        '''
+        Kanvas üzerindeki görüntüyü tahmin etmek için kullanılır.
+        '''
         s = self.label.pixmap().toImage().bits().asarray(self.QPixmap_size[0] * self.QPixmap_size[1] * 4)
         arr = np.frombuffer(s, dtype=np.uint8).reshape((self.QPixmap_size[0], self.QPixmap_size[1], 4))
-        if self.image_loaded_from_disk: # Eğer görüntü diskten yüklendiyse
+        if self.image_loaded_from_disk:  # Eğer görüntü diskten yüklendiyse
             img = Image.fromarray(arr)
             img_gray = ImageOps.grayscale(img)
             # Ortalama pizel değeri 128'den fazlaysa görüntüyü ters çevirin
@@ -118,6 +139,7 @@ class MainWidget(QtWidgets.QWidget):
             if np.mean(img_gray) > 128: # 128, 0 ve 255'in ortasıdır
                 img_gray = ImageOps.invert(img_gray) # Görüntüyü ters çevirin
                 img_gray = img_gray.resize((self.training_size[0], self.training_size[1]), Image.ANTIALIAS)
+                img_gray = adjust_grayscale(img_gray) # Adjust grayscale
             else:
                 img_gray = img_gray.resize((self.training_size[0], self.training_size[1]), Image.ANTIALIAS)
                 arr = np.array(img_gray)
@@ -135,19 +157,21 @@ class MainWidget(QtWidgets.QWidget):
             prediction_value = chr(self.loaded_model.predict(arr)[0])
         self.prediction.setText('Prediction: ' + prediction_value)
         self.image_loaded_from_disk = False
-    
+
     def mouseMoveEvent(self, e):
-        if self.last_x is None: # First event.
+        '''
+        Kanvas üzerindeki fare hareketini izlemek için kullanılır.
+        '''
+        if self.last_x is None:  # İlk etkinlik.
             self.last_x = e.x()
             self.last_y = e.y()
-            return # Ignore the first time.
+            return  # İlk seferi görmezden gel.
 
         painter = QtGui.QPainter(self.label.pixmap())
 
         p = painter.pen()
-        p.setWidth(self.brush_size)  # Use the updated brush size
-        # p.setWidth(5)
-        self.pen_color = QtGui.QColor('#FFFFFF')
+        p.setWidth(self.brush_size)  # Güncellenmiş fırça boyutunu kullanın
+        self.pen_color = QtGui.QColor('#FFFFFF')  # Beyaz renk kullanın
         p.setColor(self.pen_color)
         painter.setPen(p)
 
@@ -164,7 +188,9 @@ class MainWidget(QtWidgets.QWidget):
         self.last_y = None
 
 class MainWindow(QtWidgets.QMainWindow):
-
+    '''
+    Ana pencereyi oluşturmak için kullanılır.
+    '''
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -176,6 +202,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
 if __name__ == "__main__":
+    '''
+    Uygulamayı çalıştırmak için kullanılır.
+    '''
     app = QtWidgets.QApplication([])
 
     mainApp = MainWindow()

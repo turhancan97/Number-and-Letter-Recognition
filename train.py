@@ -12,7 +12,7 @@ train_x, train_y, test_x, test_y = data["train_x"], data["train_y"], data["test_
 # Bunları bir liste içerisinde tutuyoruz.
 # Model isimlerini ve doğruluklarını tutmak için bir sözlük oluşturuyoruz.
 # Daha sonra döngü içinde modeli eğitip doğruluğunu hesaplayıp sözlüğe ekliyoruz.
-model_names = ['Logistic Regression', 'K Nearest Neighbors', 'Multi Layer Perceptron', 'Support Vector Machine']
+model_names = ['Logistic Regression', 'K Nearest Neighbors', 'Multi Layer Perceptron', 'Decision Tree', 'Random Forest']
 model_accuracy = {}
 for model_name in model_names:
     model, accuracy = train_model(model_name, train_x, train_y, test_x, test_y)
