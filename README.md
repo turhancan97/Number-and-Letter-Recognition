@@ -116,4 +116,3 @@ python test.py
 #### Interface Examples
 
 ![1](docs/ui_image.png)
-![2](docs/ui_image_2.png)
