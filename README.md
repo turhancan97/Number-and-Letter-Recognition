@@ -110,3 +110,8 @@ python test.py
 ```
 
 - Bu komut, kullanıcıdan bir pencerede bir sayı veya harf çizmesini veya bir resim yüklemesini ister. Program daha sonra kullanıcının hangi sayıyı veya harfi çizdiğini tahmin etmek için en iyi modeli kullanır.
+
+### Arayüz Örnekleri
+
+![1](docs/ui_image.png)
+![2](docs/ui_image_2.png)
