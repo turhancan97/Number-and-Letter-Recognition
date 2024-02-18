@@ -1,25 +1,27 @@
 # Number and Letter Recognition
 
-## Açıklama
+## Description
 
-Bu proje basit bir sayı ve harf tanıma programıdır. El yazısı sayıları ve harfleri tanımak için bir sinir ağı, Decision Tree, Random Forest, Lojistik Regresyon ve KNN'yi eğitmek için MNIST ve Alfabe veri kümesini kullanır. Program Python'da yazılmıştır ve Machine Learning modelini oluşturmak için sklearn kütüphanesini kullanır. Program daha sonra kullanıcıdan bir pencerede bir sayı veya harf çizmesini veya bir resim yüklemesini ister. Program daha sonra kullanıcının hangi sayıyı veya harfi çizdiğini tahmin etmek için modeli kullanır.
+This project is a simple number and letter recognition program. It uses MNIST and Alphabet dataset to train a neural network, Decision Tree, Random Forest, Logistic Regression and KNN to recognize handwritten numbers and letters. The program is written in Python and uses the sklearn library to build the Machine Learning model. The program then asks the user to draw a number or letter in a window or upload an image. The program then uses the model to predict which number or letter the user has drawn.
 
-## Kurulum
+## Installation
 
 ```bash
 conda create -n number_letter_recognition python=3.9
 conda activate number_letter_recognition
 ```
 
-- Eğer conda kurulu değilse [buradan](https://docs.conda.io/projects/conda/en/latest/user-guide/install/windows.html) indirebilirsiniz.
-- Eğer environment kurmak için conda kullanmak istemiyorsanız venv kullanabilirsiniz. [Buradan](https://docs.python.org/3/library/venv.html) venv hakkında bilgi alabilirsiniz.
-- Daha sonra gerekli kütüphaneleri aşağıdaki komut ile kurabilirsiniz.
+- If you don't have conda installed you can download it [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/windows.html).
+- If you don't want to use conda to install environment you can use venv. You can get information about venv [from here](https://docs.python.org/3/library/venv.html).
+- Then you can install the necessary libraries with the following command.
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Veri klasörü yapısı
+## Data folder structure
+
+The data is not in this repository. You can download the data from kaggle ([click here](https://www.kaggle.com/datasets/lopalp/alphanum/data) for alphabet dataset and [click here](https://www.kaggle.com/datasets/hojjatk/mnist-dataset) for mnist dataset). After downloading the data, you can create the following folder structure and put the data in the appropriate folders. You will also use the alphabet_extractor.py and mnist_extractor.py files to extract the data. You don't need to train the models again. You can use the models in the models folder.
 
 ```bash
 data/
@@ -54,64 +56,64 @@ alphabet_extractor.py
 mnist_extractor.py
 ```
 
-### MNIST veri kümesini çıkarmak için
+#### To extract the MNIST dataset
 
 ```bash
 python mnist_extractor.py
 ```
 
-- Mnist veri kümesi, 28x28 boyutunda 70.000 resim içerir. 60.000 eğitim resmi ve 10.000 test resmi vardır. Her resim, 0 ile 9 arasında bir sayıyı temsil eden bir etikete sahiptir.
-- Verileri erozyon uygulayarak işliyoruz. Bunun nedeni, Alphabet verisetindeki görüntülerin MNIST veri setindeki görüntülerden daha ince olmasıdır. Böylelikle MNSIT veri setindeki rakamları inceltiyoruz ve Alphabet veri setindeki görüntülerle benzer dağılımsal özelliklere sahip oluyoruz.
+- The Mnist dataset contains 70,000 images of size 28x28. There are 60,000 training images and 10,000 test images. Each image has a label representing a number between 0 and 9.
+- We process the data by applying erosion. This is because the images in the Alphabet dataset are thinner than the images in the MNIST dataset. So we thin the digits in the MNSIT dataset and have similar distributional properties to the images in the Alphabet dataset.
 
-![erozyon](docs/erozyon.png)
+![erosion](docs/erozyon.png)
 
-### Alfabe veri kümesini çıkarmak için
+### To extract the alphabet dataset
 
 ```bash
 python alphabet_extractor.py
 ```
 
-- Alphanet veri setindeki her görüntü 256x256 piksel boyutundadır.
-- Daha sonra bu görüntüleri 28x28 piksel boyutuna yeniden boyutlandırıyoruz. Bunun nedeni, daha küçük görüntülerin daha hızlı eğitilmesidir. Ayrıca MNIST veri seti ile aynı boyutu kullanmak, daha sonra eğitim ve test verilerini birleştirmeyi kolaylaştırır.
-- Bunlara ek olarak görüntüleri gri tonlamalı (arka siyah yazı beyaz) hale getiriyoruz. Bu, daha sonra görüntüleri daha kolay işlemek için ve MNIST veri seti ile aynı formata getirmek için yapılır
+- Each image in the Alphanet dataset has a size of 256x256 pixels.
+- We then resize these images to 28x28 pixels. This is because smaller images train faster. Also, using the same size as the MNIST dataset makes it easier to combine the training and test data later on.
+- In addition, we make the images grayscale (background black with white text). This is done to make it easier to process the images later and to bring them into the same format as the MNIST dataset
 
 ![düzeltme](docs/düzenleme.png)
 
-## Veri önişleme
+## Data preprocessing
 
-- Burada veriler birleştirilir ve daha sonra eğitim ve test verileri olarak bölünür. Ayrıca verileri normalleştiririz. Normalleştirme, verileri 0 ile 1 arasında bir değere dönüştürür. Bu, daha sonra eğitim verilerini daha hızlı eğitmek için yapılır.
+- Here the data is combined and then split into training and test data. We also normalize the data. Normalization converts the data into a value between 0 and 1. This is then done to train the training data faster.
 
 ```bash
 python preprocessing.py
 ```
 
-## Tüm Modelleri eğitmek için
+## To train all Models
 
 ```bash
 python train.py
 ```
 
-- Bu komut, eğitim verilerini kullanarak tüm modelleri eğitir ve daha sonra modelleri kaydeder. Ayrıca modelleri en iyiden en kötüye doğruluk sırasına göre sıralar.
+- This command trains all models using the training data and then saves the models. It also sorts the models in order of accuracy from best to worst.
 
-## En iyi modeli eğitmek için
+## To train the best model
 
 ```bash
 python best_model_train.py
 ```
 
-## Grafikler
+## Plot the results
 
-- Grafikler için result.ipynb dosyasına bakınız.
+- See result.ipynb file for graphs.
 
-## Test ve Arayüz
+## Testing and Interface
 
 ```bash
 python test.py
 ```
 
-- Bu komut, kullanıcıdan bir pencerede bir sayı veya harf çizmesini veya bir resim yüklemesini ister. Program daha sonra kullanıcının hangi sayıyı veya harfi çizdiğini tahmin etmek için en iyi modeli kullanır.
+- This command asks the user to draw a number or letter in a window or to upload an image. The program then uses the best model to guess which number or letter the user drew.
 
-### Arayüz Örnekleri
+#### Interface Examples
 
 ![1](docs/ui_image.png)
 ![2](docs/ui_image_2.png)
