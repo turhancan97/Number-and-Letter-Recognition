@@ -10,14 +10,14 @@ from sklearn.metrics import classification_report, accuracy_score
 
 def adjust_grayscale(image, threshold=65):
     """
-    Bir eşik uygulayarak bir görüntünün gri tonlama değerlerini ayarlar.
+    Adjusts the grayscale values of an image by applying a threshold.
     """
     return image.point(lambda x: 0 if x < threshold else x)
 
 
 def apply_erosion(image_array, kernel_size=(3, 3), iterations=1):
     """
-    Belirtilen çekirdek boyutunu ve yinelemeleri kullanarak giriş görüntü dizisi üzerinde erozyon işlemi uygular.
+    Performs erosion on the input image sequence using the specified kernel size and iterations.
     """
     kernel = np.ones(kernel_size, np.uint8)
     return cv2.erode(image_array, kernel, iterations=iterations)
@@ -31,7 +31,7 @@ def train_model(
     test_y: np.ndarray,
 ):
     """
-    Verilen model adını ve giriş verilerini temel alarak bir makine öğrenimi modelini eğitir.
+    It trains a machine learning model based on the given model name and input data.
     """
     if model_name == "K Nearest Neighbors":
         model = KNeighborsClassifier()

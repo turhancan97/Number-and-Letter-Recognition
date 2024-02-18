@@ -2,7 +2,7 @@ import pickle
 
 def load_mnist():
     '''
-    MNIST veri setini yükleyin.
+    Load the MNIST data set.
     '''
     with open('data/mnist.pkl', 'rb') as f:
         mnist = pickle.load(f)
@@ -10,7 +10,7 @@ def load_mnist():
 
 def load_alphabet():
     '''
-    Alphanet veri setini yükleyin.
+    Load the Alphanet data set.
     '''
     with open('data/alphabet.pkl', 'rb') as f:
         alphabet = pickle.load(f)
@@ -21,14 +21,14 @@ def load_alphabet():
 
 def save_pickle(data, output_file):
     '''
-    Verileri pickle dosyasına kaydedin.
+    Save the data in a pickle file.
     '''
     with open(output_file, 'wb') as f:
         pickle.dump(data, f)
 
 def load_pickle(input_file):
     '''
-    Verileri pickle dosyasından yükleyin.
+    Load the data from the pickle file.
     '''
     with open(input_file, 'rb') as f:
         data = pickle.load(f)
