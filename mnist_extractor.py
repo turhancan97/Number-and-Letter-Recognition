@@ -2,7 +2,7 @@ import os
 from PIL import Image
 import numpy as np
 import pickle
-from utils import apply_erosion
+from recognition.utils import apply_erosion
 
 def load_images_from_folder(folder):
     """

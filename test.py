@@ -6,7 +6,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QSize
 
-from utils import apply_erosion, adjust_grayscale
+from recognition.utils import apply_erosion, adjust_grayscale
 
 class MainWidget(QtWidgets.QWidget):
 

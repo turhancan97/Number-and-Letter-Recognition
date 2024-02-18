@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from load_and_save_files import load_mnist, load_alphabet, save_pickle
+from recognition.load_and_save_files import load_mnist, load_alphabet, save_pickle
 
 # MNIST ve Alphanet veri setlerini yükleyin
 train_x_mnist, train_y_mnist, test_x_mnist, test_y_mnist = load_mnist()

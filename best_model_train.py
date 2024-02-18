@@ -1,6 +1,6 @@
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, accuracy_score
-from load_and_save_files import load_pickle, save_pickle
+from recognition.load_and_save_files import load_pickle, save_pickle
 
 # Ön işleme yapılmış verileri yüklüyoruz.
 data = load_pickle("data/preprocessed_data.pkl")

@@ -2,7 +2,7 @@ import os
 from PIL import Image, ImageOps
 import numpy as np
 import pickle
-from utils import adjust_grayscale
+from recognition.utils import adjust_grayscale
 
 def from_jpg_to_png(folder):
     """

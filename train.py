@@ -1,6 +1,6 @@
 import pandas as pd
-from utils import train_model
-from load_and_save_files import load_pickle, save_pickle
+from recognition.utils import train_model
+from recognition.load_and_save_files import load_pickle, save_pickle
 
 # Ön işleme yapılmış verileri yüklüyoruz.
 data = load_pickle("data/preprocessed_data.pkl")
