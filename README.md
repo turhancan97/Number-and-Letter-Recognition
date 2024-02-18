@@ -77,7 +77,7 @@ python alphabet_extractor.py
 - We then resize these images to 28x28 pixels. This is because smaller images train faster. Also, using the same size as the MNIST dataset makes it easier to combine the training and test data later on.
 - In addition, we make the images grayscale (background black with white text). This is done to make it easier to process the images later and to bring them into the same format as the MNIST dataset
 
-![düzeltme](docs/düzenleme.png)
+![düzeltme](docs/düzenleme.png)
 
 ## Data preprocessing
 
