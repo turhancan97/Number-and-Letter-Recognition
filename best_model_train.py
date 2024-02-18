@@ -6,7 +6,12 @@ from recognition.load_and_save_files import load_pickle, save_pickle
 data = load_pickle("data/preprocessed_data.pkl")
 
 # Split the data.
-train_x, train_y, test_x, test_y = data["train_x"], data["train_y"], data["test_x"], data["test_y"]
+train_x, train_y, test_x, test_y = (
+    data["train_x"],
+    data["train_y"],
+    data["test_x"],
+    data["test_y"],
+)
 
 # Random Forest model with 83% accuracy is selected as the best model.
 # Now, the goal is to optimize the hyperparameters of this model to obtain a better model.

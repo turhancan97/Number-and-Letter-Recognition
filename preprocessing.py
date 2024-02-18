@@ -4,7 +4,14 @@ from recognition.load_and_save_files import load_mnist, load_alphabet, save_pick
 
 # Load MNIST and Alphanet datasets
 train_x_mnist, train_y_mnist, test_x_mnist, test_y_mnist = load_mnist()
-train_x_alphabet, train_y_alphabet, valid_x_alphabet, valid_y_alphabet, test_x_alphabet, test_y_alphabet = load_alphabet()
+(
+    train_x_alphabet,
+    train_y_alphabet,
+    valid_x_alphabet,
+    valid_y_alphabet,
+    test_x_alphabet,
+    test_y_alphabet,
+) = load_alphabet()
 
 # Merge training and validation data in the Alphabet dataset because they will be used as training data
 train_x_alphabet = np.concatenate((train_x_alphabet, valid_x_alphabet))
