@@ -5,5 +5,5 @@ PyQt5==5.15.4
 scikit_learn==1.5.0
 matplotlib==3.4.0
 ipykernel==6.27.1
-opencv-python==4.5.4.58
+opencv-python==4.8.1.78
 seaborn==0.11.2
